@@ -59,7 +59,9 @@ jobs:
           arch: ${{ matrix.arch }}
 
       - name: Install deps
-        run: ./install_deps.sh
+        env:
+          target: ${{ matrix.target }}
+        run: ./install_deps.sh "$target"
 
       - name: Clone
         env:
