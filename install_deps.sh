@@ -31,7 +31,7 @@ case "$1" in
       x86_64-*-musl ) packages="$packages musl-tools" ;;
       aarch64-*-musl )
         # add arm to sources and install musl-dev
-        dpkg --add-architecture arm64
+        run_root dpkg --add-architecture arm64
         release="$(bash -c '. /etc/os-release; echo $VERSION_CODENAME')"
         echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $release universe" | run_root tee -a /etc/apt/sources.list > /dev/null
         echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $release main" | run_root tee -a /etc/apt/sources.list > /dev/null
