@@ -2,7 +2,7 @@
 
 case "$1" in
   *-apple-darwin )
-    ADDITIONAL_ARGS=
+    ADDITIONAL_ARGS="--cc=clang"
     ;;
   aarch64-unknown-linux-gnu )
     # for aarch64 gnu, prefix is required
