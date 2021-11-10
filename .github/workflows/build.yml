@@ -32,28 +32,34 @@ jobs:
   
   build:
     needs: [pre]
-    defaults:
-      run:
-        shell: bash
     strategy:
       fail-fast: false
       matrix:
         include:
           - target: x86_64-unknown-linux-musl
             runs-on: ubuntu-latest
+            shell: bash
           - target: aarch64-unknown-linux-musl
             runs-on: ubuntu-latest
+            shell: bash
           - target: x86_64-pc-windows-msvc
             runs-on: windows-latest
             arch: amd64
+            shell: msys2 {0}
           - target: aarch64-pc-windows-msvc
             runs-on: windows-latest
             arch: amd64_arm64
+            shell: msys2 {0}
           - target: x86_64-apple-darwin
             runs-on: macos-11
+            shell: bash
           - target: aarch64-apple-darwin
             runs-on: macos-11
+            shell: bash
     runs-on: ${{ matrix.runs-on }}
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
     steps:
       - uses: actions/checkout@v2
       - uses: anatawa12/something-releaser@v2
@@ -61,13 +67,13 @@ jobs:
         if: ${{ matrix.runs-on == 'windows-latest' }}
         with:
           arch: ${{ matrix.arch }}
+      - uses: msys2/setup-msys2@v2
 
       - name: Install deps
         env:
           target: ${{ matrix.target }}
         run: |
           ./install_deps.sh "$target"
-          gh-add-path 'C:\Program Files\NASM\'
 
       - name: Clone
         env:
