@@ -20,7 +20,7 @@ run_apt() {
 
 case "$1" in
   *-apple-darwin )       brew update && brew install automake git libtool shtool wget nasm ;;
-  *-pc-windows-msvc )    pacman -S --noconfirm nasm;;
+  *-pc-windows-msvc )    pacman -S --noconfirm git nasm;;
   *-unknown-linux-* )
     packages="autoconf automake git-core wget yasm"
     case "$1" in
