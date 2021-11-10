@@ -75,7 +75,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           BUILT="$(pwd)/built"
-          targz="../built-$target.tar.gz"
+          targz="$(pwd)/built-$target.tar.gz"
           build="$(pwd)/build.sh"
 
           mkdir "$BUILT"
