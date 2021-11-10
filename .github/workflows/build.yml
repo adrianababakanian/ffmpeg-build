@@ -1,7 +1,7 @@
 name: Build
 on:
   schedule:
-    - cron: * * 0 * *
+    - cron: "0 0 * * *"
   workflow_dispatch: {}
 jobs: 
   pre:
@@ -29,8 +29,9 @@ jobs:
   
   build:
     needs: [pre]
-    defaults: 
-      shell: bash
+    defaults:
+      run:
+        shell: bash
     strategy:
       matrix:
         include:
