@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eu
 die() {
   echo "$@" >&2
   exit 1
