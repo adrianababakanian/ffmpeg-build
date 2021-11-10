@@ -8,7 +8,7 @@ case "$1" in
     ADDITIONAL_ARGS=
     ;;
   *-unknown-linux-musl )
-    ADDITIONAL_ARGS="--cc=musl-gcc --ld=musl-ld"
+    ADDITIONAL_ARGS="--cc=musl-gcc --ld=musl-ldd"
     ;;
   *-pc-windows-msvc )
     ADDITIONAL_ARGS=--toolchain=msvc
