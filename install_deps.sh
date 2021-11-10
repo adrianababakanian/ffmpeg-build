@@ -18,5 +18,5 @@ case "$1" in
   *-apple-darwin )       brew update && brew install automake git libtool shtool wget nasm ;;
   *-unknown-linux-gnu )  run_apt update -qq && run_apt install -y autoconf automake build-essential git-core wget yasm;;
   *-unknown-linux-musl ) run_apt update -qq && run_apt install -y autoconf automake build-essential git-core musl-tools wget yasm;;
-  *-pc-windows-msvc )    choco install msys2 yasm;;
+  *-pc-windows-msvc )    choco install -y msys2 yasm;;
 esac
