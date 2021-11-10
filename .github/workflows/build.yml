@@ -98,3 +98,8 @@ jobs:
             tar czf "$targz" .
           popd
           gh release upload "$version" "$targz"
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with: 
+          name: build-log-${{ matrix.target }}
+          path: ffmpeg/ffbuild/config.log
