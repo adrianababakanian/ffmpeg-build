@@ -45,5 +45,6 @@ case "$1" in
         run_root tee "/usr/bin/aarch64-linux-musl-gcc" < "$resources/aarch64-linux-musl-gcc" > /dev/null
         ;;
     esac
-    run_apt update -qq && run_apt install -y $packages;;
+    run_apt update -qq || :
+    run_apt install -y $packages;;
 esac
