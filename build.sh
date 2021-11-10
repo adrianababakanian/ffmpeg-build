@@ -17,7 +17,7 @@ esac
 
 case "$1" in
   aarch64-* )
-    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --arch=aarch64"
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --enable-cross-compile --arch=aarch64"
     ;;
 esac
 
