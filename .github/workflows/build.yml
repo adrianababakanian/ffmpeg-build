@@ -68,6 +68,7 @@ jobs:
         with:
           arch: ${{ matrix.arch }}
       - uses: msys2/setup-msys2@v2
+        if: ${{ matrix.runs-on == 'windows-latest' }}
 
       - name: Install deps
         env:
