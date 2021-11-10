@@ -22,14 +22,27 @@ case "$1" in
   *-apple-darwin )       brew update && brew install automake git libtool shtool wget nasm ;;
   *-pc-windows-msvc )    choco install -y msys2 yasm;;
   *-unknown-linux-* )
-    packages="autoconf automake build-essential git-core wget yasm"
+    packages="autoconf automake git-core wget yasm"
     case "$1" in
-      x86_64-* ) packages="$packages build-essential-amd64" ;;
-      aarch64-* ) packages="$packages build-essential-arm64" ;;
+      x86_64-* ) packages="$packages build-essential" ;;
+      aarch64-* ) packages="$packages crossbuild-essential-arm64" ;;
     esac
     case "$1" in
       x86_64-*-musl ) packages="$packages musl-tools" ;;
-      aarch64-*-musl ) packages="$packages musl-tools:arm64" ;;
+      aarch64-*-musl )
+        # add arm to sources and install musl-dev
+        release="$(bash -c '. /etc/os-release; echo $VERSION_CODENAME')"
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $release universe" | run_root tee -a /etc/apt/sources.list > /dev/null
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $release main" | run_root tee -a /etc/apt/sources.list > /dev/null
+        packages="$packages musl-dev:arm64"
+
+        # install musl-gcc and specs
+        resources="$(dirname "$0")/resources/aarch64-linux-musl"
+        musl_lib="/usr/lib/aarch64-linux-musl"
+        mkdir -p "$musl_lib"
+        run_root tee "$musl_lib/musl-gcc.specs" < "$resources/musl-gcc.specs" > /dev/null
+        run_root tee "/usr/bin/aarch64-linux-musl-gcc" < "$resources/aarch64-linux-musl-gcc" > /dev/null
+        ;;
     esac
     run_apt update -qq && run_apt install -y $packages;;
 esac

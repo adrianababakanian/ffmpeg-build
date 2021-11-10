@@ -4,11 +4,19 @@ case "$1" in
   *-apple-darwin )
     ADDITIONAL_ARGS=
     ;;
+  aarch64-unknown-linux-gnu )
+    # for aarch64 gnu, prefix is required
+    ADDITIONAL_ARGS="--cross-prefix=aarch64-linux-gnu- --target-os=linux"
+    ;;
   *-unknown-linux-gnu )
     ADDITIONAL_ARGS=
     ;;
+  aarch64-unknown-linux-musl )
+    # for aarch64 musl, musl-gcc for aarch64
+    ADDITIONAL_ARGS="--cc=aarch64-linux-musl-gcc"
+    ;;
   *-unknown-linux-musl )
-    ADDITIONAL_ARGS="--cc=musl-gcc --ld=musl-ldd"
+    ADDITIONAL_ARGS="--cc=musl-gcc"
     ;;
   *-pc-windows-msvc )
     ADDITIONAL_ARGS=--toolchain=msvc
