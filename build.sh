@@ -15,6 +15,12 @@ case "$1" in
     ;;
 esac
 
+case "$1" in
+  aarch64-* )
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --arch=aarch64"
+    ;;
+esac
+
 ./configure \
   --prefix="$2" \
   --disable-doc \
