@@ -39,7 +39,7 @@ case "$1" in
         # install musl-gcc and specs
         resources="$(dirname "$0")/resources/aarch64-linux-musl"
         musl_lib="/usr/lib/aarch64-linux-musl"
-        mkdir -p "$musl_lib"
+        run_root mkdir -p "$musl_lib"
         run_root tee "$musl_lib/musl-gcc.specs" < "$resources/musl-gcc.specs" > /dev/null
         run_root tee "/usr/bin/aarch64-linux-musl-gcc" < "$resources/aarch64-linux-musl-gcc" > /dev/null
         ;;
