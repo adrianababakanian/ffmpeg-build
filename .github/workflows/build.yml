@@ -1,0 +1,81 @@
+name: Build
+on:
+  schedule:
+    - cron: * * 0 * *
+  workflow_dispatch: {}
+jobs: 
+  pre:
+    runs-on: ubuntu-latest
+    outputs: 
+      version: ${{ steps.main.outputs.version }}
+      hash: ${{ steps.main.outputs.hash }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: anatawa12/something-releaser@v2
+      - id: main
+        run: |-
+          git clone https://git.ffmpeg.org/ffmpeg.git --depth 1
+          pushd ffmpeg
+            hash="$(git rev-parse HEAD)"
+          popd
+          date="$(date +%Y-%m-%d-%H-%M-%S)"
+          version="$hash-$date"
+
+          git tag "$version"
+          git push origin "$version"
+
+          gh-set-output version "$version"
+          gh-set-output hash "$hash"
+  
+  build:
+    needs: [pre]
+    defaults: 
+      shell: bash
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-musl
+            runs-on: ubuntu-latest
+          - target: aarch64-unknown-linux-musl
+            runs-on: ubuntu-latest
+          - target: x86_64-pc-windows-msvc
+            runs-on: windows-latest
+            arch: amd64
+          - target: aarch64-pc-windows-msvc
+            runs-on: windows-latest
+            arch: amd64_arm64
+          - target: x86_64-apple-darwin
+            runs-on: macos-latest
+          - target: aarch64-apple-darwin
+            runs-on: macos-latest
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ilammy/msvc-dev-cmd@v1
+        if: ${{ matrix.runs-on == 'windows-latest' }}
+        with:
+          arch: ${{ matrix.arch }}
+
+      - name: Install deps
+        run: ./install_deps.sh
+
+      - name: Clone
+        env:
+          hash: ${{ needs.pre.outputs.hash }}
+        run: ./clone.sh $hash
+
+      - name: Build
+        env:
+          target: ${{ matrix.target }}
+          version: ${{ needs.pre.outputs.version }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BUILT="$(pwd)/built"
+          targz="../built-$target.tar.gz"
+          mkdir "$BUILT"
+          pushd ffmpeg
+            ./build.sh "$target" "$BUILT"
+          cd "$BUILT"
+            tar czf "$targz" .
+          popd
+          gh release upload "$version" "$targz"
