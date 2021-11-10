@@ -47,9 +47,9 @@ jobs:
             runs-on: windows-latest
             arch: amd64_arm64
           - target: x86_64-apple-darwin
-            runs-on: macos-latest
+            runs-on: macos-11
           - target: aarch64-apple-darwin
-            runs-on: macos-latest
+            runs-on: macos-11
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v2
