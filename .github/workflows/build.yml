@@ -73,9 +73,11 @@ jobs:
         run: |
           BUILT="$(pwd)/built"
           targz="../built-$target.tar.gz"
+          build="$(pwd)/build.sh"
+
           mkdir "$BUILT"
           pushd ffmpeg
-            ./build.sh "$target" "$BUILT"
+            "$build" "$target" "$BUILT"
           cd "$BUILT"
             tar czf "$targz" .
           popd
