@@ -57,8 +57,6 @@ jobs:
             runs-on: macos-11
             shell: bash
     runs-on: ${{ matrix.runs-on }}
-    env:
-      MSYS2_PATH_TYPE: inherit
     defaults:
       run:
         shell: ${{ matrix.shell }}
@@ -71,6 +69,8 @@ jobs:
           arch: ${{ matrix.arch }}
       - uses: msys2/setup-msys2@v2
         if: ${{ matrix.runs-on == 'windows-latest' }}
+        with:
+          path-type: minimal
 
       - name: Install deps
         env:
