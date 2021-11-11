@@ -1,6 +1,9 @@
 #!/bin/bash -eu
 
 case "$1" in
+  aarch64-apple-darwin )
+    ADDITIONAL_ARGS="--cc=aarch64-apple-darwin-clang"
+    ;;
   *-apple-darwin )
     ADDITIONAL_ARGS="--cc=clang"
     ;;

@@ -19,7 +19,10 @@ run_apt() {
 }
 
 case "$1" in
-  *-apple-darwin )       brew update && brew install automake git libtool shtool wget nasm ;;
+  *-apple-darwin )
+    brew update && brew install automake git libtool shtool wget nasm
+    run_root cp -p "$resources/aarch64-apple-darwin-clang" "/usr/bin/aarch64-apple-darwin-clang"
+    ;;
   *-pc-windows-msvc )
     pacman -S --noconfirm git make nasm
     curl -sL https://github.com/FFmpeg/gas-preprocessor/raw/master/gas-preprocessor.pl > /usr/bin/gas-preprocessor.pl

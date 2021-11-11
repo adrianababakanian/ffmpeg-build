@@ -1,0 +1,2 @@
+#!/bin/sh
+exec "${REALCLANG:-clang}" -target aarch64-apple-darwin "$@"
