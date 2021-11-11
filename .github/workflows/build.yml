@@ -4,19 +4,6 @@ on:
     - cron: "0 0 * * *"
   workflow_dispatch: {}
 jobs: 
-  temporal-for-github-dev-bug:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: anatawa12/something-releaser@v2
-      - id: main
-        run: |-
-          set-git-user "anatawa12"
-          chmod +x ./configure.sh
-          git commit -am "chmod +x ./configure.sh for github.dev bug"
-          git push
-          exit 1
-
   pre:
     runs-on: ubuntu-latest
     outputs: 
