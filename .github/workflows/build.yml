@@ -83,23 +83,38 @@ jobs:
           hash: ${{ needs.pre.outputs.hash }}
         run: ./clone.sh $hash
 
-      - name: Build
+      - name: Configure
         env:
           target: ${{ matrix.target }}
-          version: ${{ needs.pre.outputs.version }}
           GH_TOKEN: ${{ github.token }}
         run: |
           BUILT="$(pwd)/built"
           targz="$(pwd)/built-$target.tar.gz"
-          build="$(pwd)/build.sh"
+          configure="$(pwd)/configure.sh"
+          gh-export-variable "BUILT" "$BUILT"
+          gh-export-variable "targz" "$targz"
 
-          mkdir "$BUILT"
           pushd ffmpeg
-            "$build" "$target" "$BUILT"
-          cd "$BUILT"
+            "$configure" "$target" "$BUILT"
+          popd
+
+      - name: Build
+        run: |
+          pushd ffmpeg
+            make
+            make install
+          popd
+
+      - name: Release
+        env:
+          version: ${{ needs.pre.outputs.version }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pushd "$BUILT"
             tar czf "$targz" .
           popd
           gh release upload "$version" "$targz"
+
       - uses: actions/upload-artifact@v2
         if: failure()
         with: 
