@@ -21,6 +21,7 @@ run_apt() {
 case "$1" in
   *-apple-darwin )
     brew update && brew install automake git libtool shtool wget nasm
+    resources="$(dirname "$0")/resources/aarch64-apple-darwin"
     run_root cp -p "$resources/aarch64-apple-darwin-clang" "/usr/bin/aarch64-apple-darwin-clang"
     ;;
   *-pc-windows-msvc )
