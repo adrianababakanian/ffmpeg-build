@@ -46,9 +46,3 @@ esac
   --disable-filters \
   --enable-protocol=file \
   $ADDITIONAL_ARGS \
-
-# builds libavutil, livavcodec, and libavformat
-make
-
-# install to $2
-make install
