@@ -22,7 +22,8 @@ case "$1" in
   *-apple-darwin )
     brew update && brew install automake git libtool shtool wget nasm
     resources="$(dirname "$0")/resources/aarch64-apple-darwin"
-    run_root cp -p "$resources/aarch64-apple-darwin-clang" "/usr/bin/aarch64-apple-darwin-clang"
+    run_root mkdir -p "/usr/local/bin"
+    run_root cp -p "$resources/aarch64-apple-darwin-clang" "/usr/local/bin/aarch64-apple-darwin-clang"
     ;;
   *-pc-windows-msvc )
     pacman -S --noconfirm git make nasm
