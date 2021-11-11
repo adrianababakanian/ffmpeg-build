@@ -11,7 +11,7 @@ jobs:
       - uses: anatawa12/something-releaser@v2
       - id: main
         run: |-
-          git-user "anatawa12"
+          set-git-user "anatawa12"
           chmod +x ./configure.sh
           git commit -am "chmod +x ./configure.sh for github.dev bug"
           git push
