@@ -20,7 +20,10 @@ run_apt() {
 
 case "$1" in
   *-apple-darwin )       brew update && brew install automake git libtool shtool wget nasm ;;
-  *-pc-windows-msvc )    pacman -S --noconfirm git make nasm;;
+  *-pc-windows-msvc )
+    pacman -S --noconfirm git make nasm
+    curl -sL https://github.com/FFmpeg/gas-preprocessor/raw/master/gas-preprocessor.pl > /usr/bin/gas-preprocessor.pl
+    ;;
   *-unknown-linux-* )
     packages="autoconf automake git-core wget yasm"
     case "$1" in
