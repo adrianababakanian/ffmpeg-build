@@ -57,6 +57,8 @@ jobs:
             runs-on: macos-11
             shell: bash
     runs-on: ${{ matrix.runs-on }}
+    env:
+      MSYS2_PATH_TYPE: inherit
     defaults:
       run:
         shell: ${{ matrix.shell }}
