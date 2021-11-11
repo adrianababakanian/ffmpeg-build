@@ -41,8 +41,8 @@ case "$1" in
         resources="$(dirname "$0")/resources/aarch64-linux-musl"
         musl_lib="/usr/lib/aarch64-linux-musl"
         run_root mkdir -p "$musl_lib"
-        run_root tee "$musl_lib/musl-gcc.specs" < "$resources/musl-gcc.specs" > /dev/null
-        run_root tee "/usr/bin/aarch64-linux-musl-gcc" < "$resources/aarch64-linux-musl-gcc" > /dev/null
+        run_root cp --preserve=mode "$resources/musl-gcc.specs" "$musl_lib/musl-gcc.specs"
+        run_root cp --preserve=mode "$resources/aarch64-linux-musl-gcc" "/usr/bin/aarch64-linux-musl-gcc"
         ;;
     esac
     run_apt update -qq || :
