@@ -1,7 +1,12 @@
 name: Build
 on:
-  workflow_dispatch: {}
-jobs: 
+  workflow_dispatch: 
+    inputs: 
+      ref:
+        required: true
+        default: HEAD
+        description: the ref of ffmpeg repositroy. 
+jobs:
   pre:
     runs-on: ubuntu-latest
     outputs: 
@@ -13,17 +18,20 @@ jobs:
       - id: main
         env:
           GH_TOKEN: ${{ github.token }}
+          REF: ${{ github.event.inputs.ref }}
         run: |-
-          git clone https://git.ffmpeg.org/ffmpeg.git --depth 1
+          mkdir ffmpeg
           pushd ffmpeg
-            hash="$(git rev-parse HEAD)"
+            git config remote.origin.url https://git.ffmpeg.org/ffmpeg.git
+            git fetch origin "$REF"
+            hash="$(git rev-parse FETCH_HEAD)"
           popd
           date="$(date +%Y-%m-%d-%H-%M-%S)"
           version="$hash-$date"
 
           git tag "$version"
           git push origin "$version"
-          gh release create "$version"
+          gh release create "$version" --notes "The relesase for $REF"
 
           gh-set-output version "$version"
           gh-set-output hash "$hash"
