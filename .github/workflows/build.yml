@@ -25,7 +25,7 @@ jobs:
           pushd ffmpeg
             git init
             git config remote.origin.url https://git.ffmpeg.org/ffmpeg.git
-            git fetch origin "$REF" --depth 0
+            git fetch origin "$REF" --depth 1
             hash="$(git rev-parse FETCH_HEAD)"
           popd
           date="$(date +%Y-%m-%d-%H-%M-%S)"
