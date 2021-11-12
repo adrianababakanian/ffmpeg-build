@@ -20,15 +20,18 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REF: ${{ github.event.inputs.ref }}
         run: |-
+          echo "getting commit hash of $REF"
           mkdir ffmpeg
           pushd ffmpeg
+            git init
             git config remote.origin.url https://git.ffmpeg.org/ffmpeg.git
-            git fetch origin "$REF"
+            git fetch origin "$REF" --depth 0
             hash="$(git rev-parse FETCH_HEAD)"
           popd
           date="$(date +%Y-%m-%d-%H-%M-%S)"
           version="$hash-$date"
 
+          echo "creating release $version"
           git tag "$version"
           git push origin "$version"
           gh release create "$version" --notes "The relesase for $REF"
