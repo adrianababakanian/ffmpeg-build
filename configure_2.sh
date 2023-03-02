@@ -33,7 +33,6 @@ case "$1" in
 esac
 
 ./configure \
-  --prefix="$2" \
   --disable-doc \
   --disable-programs \
   --disable-avdevice \
